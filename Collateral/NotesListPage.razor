@@ -1,13 +1,14 @@
-﻿@inherits LayoutComponentBase
+﻿@page "/"
 
-<div class="page">
-    <main>
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
-</div>
+@inject INotesService _NotesService
+
+<h1>Notes List</h1>
+
+<ul>
+    <li>Note One</li>
+    <li>Note Two</li>
+    <li>Note Three</li>
+</ul>
 
 @code {
-
 }
