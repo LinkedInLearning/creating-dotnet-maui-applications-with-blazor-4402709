@@ -23,6 +23,11 @@ public static class MauiProgram
         builder.Logging.AddDebug();
 #endif
 
+        builder.Services.AddMauiBlazorWebView();
+#if DEBUG
+        builder.Services.AddBlazorWebViewDeveloperTools();
+#endif 
+
         RegisterDependencyInjection(builder);
 
         RegisterRoutes();
