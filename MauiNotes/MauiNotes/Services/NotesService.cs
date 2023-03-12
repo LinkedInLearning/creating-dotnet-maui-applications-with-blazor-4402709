@@ -34,17 +34,17 @@ namespace MauiNotes.Services
 
         public void AddNote(Note note)
         {
-            throw new NotImplementedException();
+            _notes.Add(note);
         }
 
         public void DeleteNote(Note note)
         {
-            throw new NotImplementedException();
+            _notes.Remove(note);
         }
 
         public Note GetNote(int id)
         {
-            throw new NotImplementedException();
+            return _notes.SingleOrDefault(n => n.NoteId == id);
         }
 
         public List<Note> GetNotes(NoteType noteType)
