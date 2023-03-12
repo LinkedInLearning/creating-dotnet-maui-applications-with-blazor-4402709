@@ -1,5 +1,6 @@
 ﻿@page "/NotesList/{Type}"
 @inject INotesService _notesService
+@inject INoteReader _noteReader
 
 <h1>Notes List</h1>
 
@@ -7,7 +8,10 @@
 <ul>
     @foreach (var item in _notes)
     {
-        <li>@item.NoteText</li>
+        <li>
+            @item.NoteText
+            &nbsp;<button @onclick="() => Read_Text(item.NoteText)">Click me</button>
+        </li>
     }
 </ul>
 
@@ -22,4 +26,10 @@
         await base.OnInitializedAsync();
         _notes = _notesService.GetNotes(Enum.Parse<NoteType>(Type));
     }
+
+    async void Read_Text(string noteText)
+    { 
+        await _noteReader.ReadNote(noteText); 
+    }
+
 }

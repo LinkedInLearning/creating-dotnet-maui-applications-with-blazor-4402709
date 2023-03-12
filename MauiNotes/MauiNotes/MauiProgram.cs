@@ -49,5 +49,6 @@ public static class MauiProgram
 
         builder.Services.AddSingleton<ILoginService, LoginService>();
         builder.Services.AddSingleton<INotesService, NotesService>();
+        builder.Services.AddSingleton<INoteReader, NoteReader>();
     }
 }
