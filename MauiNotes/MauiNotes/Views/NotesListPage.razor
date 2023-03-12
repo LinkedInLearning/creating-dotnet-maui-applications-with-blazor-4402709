@@ -1,12 +1,25 @@
-﻿@page "/"
+﻿@page "/NotesList/{Type}"
+@inject INotesService _notesService
 
 <h1>Notes List</h1>
 
+<p>Type: @Type</p>
 <ul>
-    <li>Note One</li>
-    <li>Note Two</li>
-    <li>Note Three</li>
+    @foreach (var item in _notes)
+    {
+        <li>@item.NoteText</li>
+    }
 </ul>
 
 @code {
+    [Parameter]
+    public string Type { get; set; }
+
+    private List<Note> _notes = new List<Note>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        _notes = _notesService.GetNotes(Enum.Parse<NoteType>(Type));
+    }
 }

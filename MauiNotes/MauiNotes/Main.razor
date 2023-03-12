@@ -8,3 +8,15 @@
         </LayoutView>
     </NotFound>
 </Router>
+
+@code {
+    @inject NavigationManager Navigation
+
+    [Parameter]
+    public String InitialRoute { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        Navigation.NavigateTo(InitialRoute);
+    }
+}

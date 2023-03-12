@@ -1,4 +1,5 @@
 using MauiNotes.Interfaces;
+using MauiNotes.Models;
 
 namespace MauiNotes.Views;
 
@@ -9,6 +10,10 @@ public partial class BlazorContainerPage : ContentPage
 	{
 		InitializeComponent();
 
+        rootComponent.Parameters = new Dictionary<string, object>
+        {
+            { "InitialRoute", $"/NotesList/{NoteType.Business}" }
+        };
         _loginService = loginService;
 	}
 
