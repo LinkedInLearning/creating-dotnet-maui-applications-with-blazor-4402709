@@ -48,5 +48,6 @@ public static class MauiProgram
         builder.Services.AddTransient<LoginViewModel>();
 
         builder.Services.AddSingleton<ILoginService, LoginService>();
+        builder.Services.AddSingleton<INotesService, NotesService>();
     }
 }
