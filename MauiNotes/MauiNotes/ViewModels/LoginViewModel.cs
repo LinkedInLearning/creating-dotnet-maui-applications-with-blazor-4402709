@@ -10,13 +10,10 @@ namespace MauiNotes.ViewModels
     public class LoginViewModel: BaseViewModel
     {
         private ILoginService _LoginService;
-        private IGlobalNavigation _GlobalNavigation;
 
-        public LoginViewModel(ILoginService loginService,
-            IGlobalNavigation globalNavigation)
+        public LoginViewModel(ILoginService loginService)
         {
             _LoginService = loginService;
-            _GlobalNavigation = globalNavigation;
         }
 
         private Command _LoginCommand;
@@ -29,8 +26,6 @@ namespace MauiNotes.ViewModels
         private async Task ExecuteLogin()
         {
             _LoginService.Login("", "");
-
-            await _GlobalNavigation.XamlNavigation.PopModalAsync();
         }
     }
 }
