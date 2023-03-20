@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
 using MauiNotes.Services;
 using MauiNotes.Interfaces;
+using MauiNotes.ViewModels;
+using MauiNotes.Views;
 
 namespace MauiNotes;
 
@@ -32,5 +34,9 @@ public static class MauiProgram
         builder.Services.AddSingleton<ILoginService, LoginService>();
         builder.Services.AddSingleton<INotesService, NotesService>();
         builder.Services.AddSingleton<INoteReader, NoteReader>();
+
+		builder.Services.AddTransient<LoginViewModel>();
+
+		builder.Services.AddTransient<LoginPage>();
     }
 }
