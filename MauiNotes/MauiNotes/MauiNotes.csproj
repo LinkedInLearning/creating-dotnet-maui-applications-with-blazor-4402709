@@ -62,4 +62,15 @@
       </MauiXaml>
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="npm_modules\" />
+      <Folder Include="wwwroot\css\ionic\" />
+      <Folder Include="wwwroot\js\ionic\" />
+      <Folder Include="wwwroot\ionic\" />
+    </ItemGroup>
+
+    <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+        <Exec Command="npm install" WorkingDirectory="npm_modules" />
+        <Exec Command="npm run copyIonic" WorkingDirectory="npm_modules" />
+    </Target>
 </Project>
