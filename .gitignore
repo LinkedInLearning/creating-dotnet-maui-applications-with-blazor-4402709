@@ -349,8 +349,8 @@ MigrationBackup/
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 
-[Nn]pm_modules/*
-![Nn]pm_modules/package.json
+**/[Nn]pm_modules/**
+!**/[Nn]pm_modules/package.json
 
-wwwroot/css/ionic/
-wwwroot/js/ionic/
+**/[Ww]wwroot/css/ionic/
+**/[Ww]wwroot/js/ionic/
