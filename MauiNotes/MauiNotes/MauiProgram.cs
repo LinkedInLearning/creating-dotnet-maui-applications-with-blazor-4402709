@@ -34,9 +34,24 @@ public static class MauiProgram
         builder.Services.AddSingleton<ILoginService, LoginService>();
         builder.Services.AddSingleton<INotesService, NotesService>();
         builder.Services.AddSingleton<INoteReader, NoteReader>();
+        builder.Services.AddSingleton<List<GlobalNavigation.ApplicationRoute>>(GetNativeApplicationRoutes());
+        builder.Services.AddTransient<IGlobalNavigation, GlobalNavigation>();
 
-		builder.Services.AddTransient<LoginViewModel>();
+        builder.Services.AddTransient<LoginViewModel>();
 
 		builder.Services.AddTransient<LoginPage>();
+    }
+
+    private static List<GlobalNavigation.ApplicationRoute> GetNativeApplicationRoutes()
+    {
+        return new List<GlobalNavigation.ApplicationRoute>
+        {
+            new GlobalNavigation.ApplicationRoute
+            {
+                Uri = "/Login",
+                Type = GlobalNavigation.ApplicationRoute.NavigationType.NativeModal,
+                NativeType = typeof(LoginPage)
+            },
+        };
     }
 }
