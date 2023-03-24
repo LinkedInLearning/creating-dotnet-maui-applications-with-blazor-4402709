@@ -8,7 +8,7 @@ namespace MauiNotes.Interfaces
 {
     public interface IGlobalNavigation
     {
-        Task NavigateTo(string url);
+        Task NavigateTo(string uri);
 
         Task NavigateBack();
     }

@@ -1,4 +1,6 @@
 ﻿@inherits LayoutComponentBase
+@inject ILoginService _LoginService
+@inject IGlobalNavigation _GlobalNavigation
 
 <div class="page">
     <div class="sidebar">
@@ -15,3 +17,15 @@
         </article>
     </main>
 </div>
+
+@code {
+    protected async override Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        if (!_LoginService.IsAuthenticated)
+        {
+            await _GlobalNavigation.NavigateTo("/Login");
+        }
+    }
+}
