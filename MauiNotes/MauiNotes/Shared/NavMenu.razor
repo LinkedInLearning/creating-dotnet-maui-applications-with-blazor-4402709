@@ -1,8 +1,55 @@
 ﻿@inject IGlobalNavigation _GlobalNavigation
 
 <ion-menu content-id="main-content">
-
+    <ion-content class="ion-padding">
+        @foreach (var item in _menuItems)
+        {
+            <ion-item lines="none" color="@item.Color">
+                <ion-menu-toggle>
+                    <ion-label @onclick="() => NavigateToURI(item.Uri)">@item.Caption</ion-label>
+                </ion-menu-toggle>
+            </ion-item>
+        }
+    </ion-content>
 </ion-menu>
 
 @code {
+    class MenuItem
+    {
+        public string Caption { get; set; }
+        public string Uri { get; set; }
+        public string Color { get; set; }
+    }
+
+    private List<MenuItem> _menuItems;
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        _menuItems = new List<MenuItem>
+        {
+            new MenuItem
+            {
+                Caption = "Notes List - Personal",
+                Uri = "/",
+                Color = "light"
+            },
+            new MenuItem
+            {
+                Caption = "Notes List - Business",
+                Uri = "/NotesList/Business",
+                Color = "default"
+            },
+        };
+    }
+
+    void NavigateToURI(string uri)
+    {
+        _GlobalNavigation.NavigateTo(uri);
+        foreach (var oMenuItem in _menuItems)
+        {
+            oMenuItem.Color = uri == oMenuItem.Uri ? "light" : "default";
+        }
+    }
 }

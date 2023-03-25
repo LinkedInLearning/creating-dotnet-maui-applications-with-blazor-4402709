@@ -3,7 +3,14 @@
 @inject INotesService _notesService
 @inject INoteReader _noteReader
 
-<h1>Notes List</h1>
+<ion-header>
+    <ion-toolbar color="primary">
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-title>Notes List</ion-title>
+    </ion-toolbar>
+</ion-header>
 
 <p>Type: @Type</p>
 <ul>
