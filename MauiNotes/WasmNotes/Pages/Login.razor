@@ -1,0 +1,28 @@
+﻿@page "/Login"
+
+<ion-header>
+    <ion-toolbar color="primary">
+        <ion-title>Login</ion-title>
+    </ion-toolbar>
+</ion-header>
+<ion-grid fixed="true" style="display: flex; flex-flow: column;">
+    <ion-row size="auto">
+        <ion-col size="2"><ion-label>User Id:</ion-label></ion-col>
+        <ion-col size="10"><ion-item><ion-input></ion-input></ion-item></ion-col>
+    </ion-row>
+    <ion-row size="auto">
+        <ion-col size="2"><ion-label>Password:</ion-label></ion-col>
+        <ion-col size="10"><ion-item><ion-input type="password"></ion-input></ion-item></ion-col>
+    </ion-row>
+    <ion-row style="flex-grow: 1" class="ion-justify-content-center ion-align-items-end">
+        <ion-col size="auto">
+            <ion-button @onclick="() => Login_Click()">Login</ion-button>
+        </ion-col>
+    </ion-row>
+</ion-grid>
+
+@code {
+    async void Login_Click()
+    {
+    }
+}
