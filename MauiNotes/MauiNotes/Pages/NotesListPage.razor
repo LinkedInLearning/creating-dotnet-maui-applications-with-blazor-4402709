@@ -11,17 +11,31 @@
         <ion-title>Notes List</ion-title>
     </ion-toolbar>
 </ion-header>
-
-<p>Type: @Type</p>
-<ul>
-    @foreach (var item in _notes)
-    {
-        <li>
-            @item.NoteText
-            &nbsp;<button @onclick="() => Read_Text(item.NoteText)">Click me</button>
-        </li>
-    }
-</ul>
+<ion-grid fixed="true">
+    <ion-row size="auto">
+        <ion-col>
+            <ion-label>Notes List</ion-label>
+        </ion-col>
+    </ion-row>
+    <ion-row size="auto">
+        <ion-col>
+            <ion-label>Type: @Type</ion-label>
+        </ion-col>
+    </ion-row>
+    <ion-row>
+        <ion-col>
+            <ion-list lines="none">
+                @foreach (var item in _notes)
+                {
+                    <ion-item>
+                        <ion-label class="ion-text-wrap">@item.NoteText</ion-label>
+                        <ion-button slot="end" fill="clear" @onclick="() => Read_Text(item.NoteText)">Read Text</ion-button>
+                    </ion-item>
+                }
+            </ion-list>
+        </ion-col>
+    </ion-row>
+</ion-grid>
 
 @code {
     [Parameter]
