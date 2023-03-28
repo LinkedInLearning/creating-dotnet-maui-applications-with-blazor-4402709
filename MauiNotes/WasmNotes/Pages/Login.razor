@@ -1,4 +1,6 @@
 ﻿@page "/Login"
+@inject IGlobalNavigation _globalNavigation
+@inject ILoginService _loginService
 
 <ion-header>
     <ion-toolbar color="primary">
@@ -24,5 +26,7 @@
 @code {
     async void Login_Click()
     {
+        _loginService.Login("", "");
+        await _globalNavigation.NavigateBack();
     }
 }
