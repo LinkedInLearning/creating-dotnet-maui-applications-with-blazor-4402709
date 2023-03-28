@@ -14,7 +14,7 @@ namespace WasmNotes.Services
         
         public async Task ReadNote(string textToRead)
         {
-            await _JsRuntime.InvokeVoidAsync("readText");
+            await _JsRuntime.InvokeVoidAsync("readText", textToRead);
         }
     }
 }
