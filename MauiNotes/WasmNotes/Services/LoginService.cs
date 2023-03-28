@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MauiNotes.Services
+namespace WasmNotes.Services
 {
     internal class LoginService : ILoginService
     {

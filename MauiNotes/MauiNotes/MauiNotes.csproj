@@ -69,6 +69,10 @@
       <Folder Include="wwwroot\ionic\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Notes.Core\Notes.Core.csproj" />
+    </ItemGroup>
+
     <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
         <Exec Command="npm install" WorkingDirectory="npm_modules" />
         <Exec Command="npm run copyIonic" WorkingDirectory="npm_modules" />

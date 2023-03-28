@@ -1,5 +1,5 @@
 ﻿using System;
-using MauiNotes.Interfaces;
+using Notes.Core.Interfaces;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using System;

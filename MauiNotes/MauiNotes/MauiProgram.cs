@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using MauiNotes.Services;
-using MauiNotes.Interfaces;
+using Notes.Core.Interfaces;
 using MauiNotes.ViewModels;
 using MauiNotes.Views;
 

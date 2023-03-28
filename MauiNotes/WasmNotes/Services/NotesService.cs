@@ -1,7 +1,7 @@
 ﻿using Notes.Core.Interfaces;
 using Notes.Core.Models;
 
-namespace MauiNotes.Services
+namespace WasmNotes.Services
 {
     public class NotesService : INotesService
     {

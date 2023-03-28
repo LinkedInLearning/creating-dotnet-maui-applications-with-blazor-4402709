@@ -1,4 +1,4 @@
-﻿using MauiNotes.Interfaces;
+﻿using Notes.Core.Interfaces;
 using MauiNotes.Services;
 using MauiNotes.ViewModels;
 

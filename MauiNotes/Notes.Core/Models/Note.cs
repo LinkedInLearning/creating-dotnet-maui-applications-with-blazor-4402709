@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MauiNotes.Models
+namespace Notes.Core.Models
 {
     public class Note
     {
