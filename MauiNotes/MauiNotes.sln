@@ -8,7 +8,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WasmNotes", "WasmNotes\Wasm
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notes.Core", "Notes.Core\Notes.Core.csproj", "{2AC030BA-59A0-4EDD-8851-37E8A3300E81}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notes.Library", "Notes.Library\Notes.Library.csproj", "{40948794-638C-4A4C-B93B-5AC5EB0697A5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notes.Library", "Notes.Library\Notes.Library.csproj", "{40948794-638C-4A4C-B93B-5AC5EB0697A5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,7 +39,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {7542A2EF-D98D-4246-BF06-554285720B1E}
 		        SolutionGuid = {61F7FB11-1E47-470C-91E2-47F8143E1572}
+		SolutionGuid = {7542A2EF-D98D-4246-BF06-554285720B1E}
 	EndGlobalSection
 EndGlobal

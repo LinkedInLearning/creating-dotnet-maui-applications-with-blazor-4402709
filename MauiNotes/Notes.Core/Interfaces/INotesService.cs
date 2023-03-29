@@ -16,5 +16,7 @@ namespace Notes.Core.Interfaces
         void AddNote(Note note);
 
         Note GetNote(int id);
+
+        void SaveNote(Note note);
     }
 }

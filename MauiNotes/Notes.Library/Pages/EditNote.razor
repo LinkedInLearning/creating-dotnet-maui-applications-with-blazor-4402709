@@ -1,0 +1,83 @@
+﻿@page "/EditNote/{NoteIdParamter}"
+
+@inject INotesService _notesService
+@inject IGlobalNavigation _globalNavigation
+@inject IJSRuntime _JsRuntime
+
+<ion-header>
+    <ion-toolbar color="primary">
+        <ion-buttons slot="start">
+            <ion-icon text="Previous" name="caret-back" @onclick="() => GoBack_Click()"></ion-icon>
+        </ion-buttons>
+        <ion-title>@NoteTitle</ion-title>
+    </ion-toolbar>
+</ion-header>
+<ion-grid fixed="true">
+    <ion-row>
+        <ion-col size="12">
+            <ion-textarea placeholder="Enter your note here" @bind-value="@currentNote.NoteText" @bind-value:event="oninput"></ion-textarea>
+        </ion-col>
+    </ion-row>
+    <ion-row>
+        <ion-col size="12">
+            <ion-select placeholder="Select Note Type" @bind-value="@currentNote.NoteType" @bind-value:event="oninput" @ref=NoteTypeControl>
+                <ion-select-option value="@NoteType.Personal">Personal</ion-select-option>
+                <ion-select-option value="@NoteType.Business">Business</ion-select-option>
+            </ion-select>
+        </ion-col>
+    </ion-row>
+    <ion-row style="flex-grow: 1" class="ion-justify-content-end ion-align-items-end">
+        <ion-col size="auto">
+            <ion-button @onclick="() => Save_Click()">Save</ion-button>
+        </ion-col>
+    </ion-row>
+</ion-grid>
+
+
+@code {
+    [Parameter]
+    public string? NoteIdParamter { get; set; }
+
+    int NoteId = 0;
+
+    private string NoteTitle = "Edit Note";
+    private Note currentNote = null;
+
+    ElementReference NoteTypeControl;
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        if (int.TryParse(NoteIdParamter, out NoteId) )
+        {
+            if (NoteId > 0 && (currentNote == null || currentNote.NoteId != NoteId))
+            {
+                currentNote = _notesService.GetNote(NoteId);
+            }
+        }
+
+        if (currentNote == null)
+        {
+            currentNote = new Note { NoteId = -1 };
+        }
+
+        if (currentNote.NoteId <= 0)
+        {
+            NoteTitle = "Add Note";
+        }
+    }
+
+    async Task GoBack_Click()
+    {
+        await _globalNavigation.NavigateBack();
+    }
+
+    async Task Save_Click()
+    {
+        var noteTypeString = await _JsRuntime.InvokeAsync<string>("getControlValue", NoteTypeControl);
+        currentNote.NoteType = Enum.Parse<NoteType>(noteTypeString, true);
+        _notesService.SaveNote(currentNote);
+        await _globalNavigation.NavigateBack();
+    }
+}

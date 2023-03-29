@@ -26,9 +26,10 @@ namespace WasmNotes.Services
             await _JsRuntime.InvokeVoidAsync("goBack");
         }
 
-        public async Task NavigateTo(string uri)
+        public Task NavigateTo(string uri)
         {
             _NavigationManager.NavigateTo(uri);
+            return Task.CompletedTask;
         }
     }
 }
