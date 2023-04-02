@@ -4,6 +4,7 @@
 @inject INoteReader _noteReader
 @inject IJSRuntime _JsRuntime
 @inject IGlobalNavigation _globalNavigation
+@inject IPlatformHelper _platformHelper
 
 <ion-header>
     <ion-toolbar color="primary">
@@ -11,6 +12,11 @@
             <ion-menu-button></ion-menu-button>
         </ion-buttons>
         <ion-title>Notes List</ion-title>
+        @if (_platformHelper.PlatformType != PlatformType.Android) {
+        <ion-buttons slot="end">
+            <ion-icon name="add-sharp" @onclick="() => Add_Note()" size="large"></ion-icon>
+        </ion-buttons>
+        }
     </ion-toolbar>
 </ion-header>
 <ion-grid fixed="true">
@@ -39,6 +45,13 @@
         </ion-col>
     </ion-row>
 </ion-grid>
+@if (_platformHelper.PlatformType == PlatformType.Android) {
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button>
+      <ion-icon name="add-sharp" @onclick="() => Add_Note()"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+}
 
 @code {
     [Parameter]

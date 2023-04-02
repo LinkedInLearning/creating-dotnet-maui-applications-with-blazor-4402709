@@ -36,6 +36,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<INoteReader, NoteReader>();
         builder.Services.AddSingleton<List<GlobalNavigation.ApplicationRoute>>(GetNativeApplicationRoutes());
         builder.Services.AddTransient<IGlobalNavigation, GlobalNavigation>();
+        builder.Services.AddSingleton<IPlatformHelper, PlatformHelper>();
 
         builder.Services.AddTransient<LoginViewModel>();
 

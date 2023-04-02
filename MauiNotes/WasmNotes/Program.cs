@@ -20,4 +20,5 @@ static void RegisterDependencyInjection(WebAssemblyHostBuilder builder)
     builder.Services.AddSingleton<INotesService, NotesService>();
     builder.Services.AddTransient<IGlobalNavigation, GlobalNavigation>();
     builder.Services.AddTransient<INoteReader, NoteReader>();
+    builder.Services.AddTransient<IPlatformHelper, PlatformHelper>();
 }
