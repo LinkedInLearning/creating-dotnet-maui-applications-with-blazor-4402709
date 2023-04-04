@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SQLite;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,8 @@ namespace Notes.Core.Models
 {
     public class Note
     {
+        [PrimaryKey]
+        [AutoIncrement]
         public int NoteId { get; set; }
 
         public string NoteText { get; set; }
