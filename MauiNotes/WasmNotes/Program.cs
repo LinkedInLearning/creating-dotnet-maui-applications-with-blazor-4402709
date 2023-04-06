@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Notes.Core.Interfaces;
 using WasmNotes;
+using IndexedDB.Blazor;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -21,4 +22,5 @@ static void RegisterDependencyInjection(WebAssemblyHostBuilder builder)
     builder.Services.AddTransient<IGlobalNavigation, GlobalNavigation>();
     builder.Services.AddTransient<INoteReader, NoteReader>();
     builder.Services.AddTransient<IPlatformHelper, PlatformHelper>();
+    builder.Services.AddSingleton<IIndexedDbFactory, IndexedDbFactory>();
 }

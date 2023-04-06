@@ -1,93 +1,74 @@
-﻿using Notes.Core.Interfaces;
+﻿using IndexedDB.Blazor;
+using Microsoft.JSInterop;
+using Notes.Core.Interfaces;
 using Notes.Core.Models;
+using System;
 
 namespace WasmNotes.Services
 {
     public class NotesService : INotesService
     {
-        private List<Note> _notes;
+        private readonly IIndexedDbFactory _DbFactory;
 
-        public NotesService()
+        public NotesService(IIndexedDbFactory dbFactory)
         {
-            _notes = new List<Note>
+            this._DbFactory = dbFactory;
+
+            _DbFactory.Create<NotesDb>();
+        }
+
+        public async Task AddNote(Note note)
+        {
+            using (var db = await _DbFactory.Create<NotesDb>())
             {
-                new Note
+                db.Notes.Add(note);
+                await db.SaveChanges();
+            }
+        }
+
+        public async Task DeleteNote(Note note)
+        {
+            using (var db = await _DbFactory.Create<NotesDb>())
+            {
+                db.Notes.Remove(note);
+                await db.SaveChanges();
+            }
+        }
+
+        public async Task<Note> GetNote(int id)
+        {
+            using (var db = await _DbFactory.Create<NotesDb>())
+            {
+                return db.Notes.SingleOrDefault(n => n.NoteId == id);
+            }
+        }
+
+        public async Task<List<Note>> GetNotes(NoteType noteType)
+        {
+            using (var db = await _DbFactory.Create<NotesDb>())
+            {
+                return db.Notes.Where(n => n.NoteType == noteType).ToList();
+            }
+        }
+
+        public async Task SaveNote(Note note)
+        {
+            using (var db = await _DbFactory.Create<NotesDb>())
+            {
+                if (db.Notes.Any(n => n.NoteId == note.NoteId))
                 {
-                    NoteId = 1,
-                    NoteText = "Make a new MAUI Timekeeping App",
-                    NoteType = NoteType.Business
-                },
-                new Note
-                {
-                    NoteId = 2,
-                    NoteText = "Update task board",
-                    NoteType = NoteType.Business
-                },
-                                new Note
-                {
-                    NoteId = 3,
-                    NoteText = "Get milk at store",
-                    NoteType = NoteType.Personal
+                    db.Notes.Remove(note);
+                    await db.SaveChanges();
                 }
-            };
-        }
-
-        public Task AddNote(Note note)
-        {
-            _notes.Add(note);
-            return Task.CompletedTask;
-        }
-
-        public Task DeleteNote(Note note)
-        {
-            _notes.Remove(note);
-            return Task.CompletedTask;
-        }
-
-        public Task<Note> GetNote(int id)
-        {
-            var oTcs = new TaskCompletionSource<Note>();
-            var returnValue = _notes.SingleOrDefault(n => n.NoteId == id);
-            if (returnValue != null)
-            {
-                returnValue = CopyNote(returnValue);
+                db.Notes.Add(note);
+                await db.SaveChanges();
             }
-            oTcs.SetResult(returnValue);
-            return oTcs.Task;
         }
+    }
 
-        private Note CopyNote(Note note)
-        {
-            return new Note
-            {
-                NoteId = note.NoteId,
-                NoteText = note.NoteText,
-                NoteType = note.NoteType,
-            };
-        }
-
-        public Task<List<Note>> GetNotes(NoteType noteType)
-        {
-            var oTcs = new TaskCompletionSource<List<Note>>();
-            oTcs.SetResult(_notes.Where(n => n.NoteType == noteType).ToList());
-            return oTcs.Task;
-        }
-
-        public Task SaveNote(Note note)
-        {
-            var oTcs = new TaskCompletionSource<Note>();
-            if (note.NoteId <= 0)
-            {
-                note.NoteId = _notes.Max(n => n.NoteId) + 1;
-            }
-            if (_notes.Any(n => n.NoteId == note.NoteId))
-            {
-                _notes.Remove(_notes.Single(n => n.NoteId == note.NoteId));
-            }
-            _notes.Add(note);
-
-            oTcs.SetResult(note);
-            return oTcs.Task;
-        }
+    public class NotesDb : IndexedDb
+    {
+        public NotesDb(IJSRuntime jSRuntime, string name, int version) : base(jSRuntime, name, version) { }
+        public IndexedSet<Note> Notes { get; set; }
     }
 }

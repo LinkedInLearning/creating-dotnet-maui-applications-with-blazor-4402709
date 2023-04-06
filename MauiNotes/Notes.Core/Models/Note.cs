@@ -9,6 +9,8 @@ namespace Notes.Core.Models
 {
     public class Note
     {
+        [IndexedDB.Blazor.Attributes.AutoIncrement]
+        [System.ComponentModel.DataAnnotations.Key]
         [PrimaryKey]
         [AutoIncrement]
         public int NoteId { get; set; }
