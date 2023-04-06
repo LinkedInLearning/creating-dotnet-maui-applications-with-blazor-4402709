@@ -32,24 +32,30 @@ namespace WasmNotes.Services
             };
         }
 
-        public void AddNote(Note note)
+        public Task AddNote(Note note)
         {
             _notes.Add(note);
+            return Task.CompletedTask;
         }
 
-        public void DeleteNote(Note note)
+        public Task DeleteNote(Note note)
         {
             _notes.Remove(note);
+            return Task.CompletedTask;
         }
 
-        public Note GetNote(int id)
+        public Task<Note> GetNote(int id)
         {
-            return _notes.SingleOrDefault(n => n.NoteId == id);
+            var oTcs = new TaskCompletionSource<Note>();
+            oTcs.SetResult(_notes.SingleOrDefault(n => n.NoteId == id));
+            return oTcs.Task;
         }
 
-        public List<Note> GetNotes(NoteType noteType)
+        public Task<List<Note>> GetNotes(NoteType noteType)
         {
-            return _notes.Where(n => n.NoteType == noteType).ToList();
+            var oTcs = new TaskCompletionSource<List<Note>>();
+            oTcs.SetResult(_notes.Where(n => n.NoteType == noteType).ToList());
+            return oTcs.Task;
         }
     }
 }
