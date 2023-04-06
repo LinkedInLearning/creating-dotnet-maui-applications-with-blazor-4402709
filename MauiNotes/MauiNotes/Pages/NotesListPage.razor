@@ -29,7 +29,7 @@
 
     private List<Note> _notes = new List<Note>();
 
-    protected override void OnParametersSet()
+    protected override async void OnParametersSet()
     {
         base.OnParametersSet();
 
@@ -37,7 +37,7 @@
         {
             Type = "Personal";
         }
-        _notes = _notesService.GetNotes(Enum.Parse<NoteType>(Type));
+        _notes = await _notesService.GetNotes(Enum.Parse<NoteType>(Type));
     }
 
     async void Read_Text(string noteText)
