@@ -24,7 +24,7 @@
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        _notes = _notesService.GetNotes(Enum.Parse<NoteType>(Type));
+        _notes = await _notesService.GetNotes(Enum.Parse<NoteType>(Type));
     }
 
     async void Read_Text(string noteText)

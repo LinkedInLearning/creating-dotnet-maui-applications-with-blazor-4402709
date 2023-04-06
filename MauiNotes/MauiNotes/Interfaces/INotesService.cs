@@ -9,12 +9,12 @@ namespace MauiNotes.Interfaces
 {
     public interface INotesService
     {
-        List<Note> GetNotes(NoteType noteType);
+        Task<List<Note>> GetNotes(NoteType noteType);
 
-        void DeleteNote(Note note);
+        Task DeleteNote(Note note);
 
-        void AddNote(Note note);
+        Task AddNote(Note note);
 
-        Note GetNote(int id);
+        Task<Note> GetNote(int id);
     }
 }
