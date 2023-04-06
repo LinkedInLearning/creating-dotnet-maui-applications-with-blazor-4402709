@@ -45,7 +45,7 @@
 
     ElementReference NoteTypeControl;
 
-    protected override void OnParametersSet()
+    protected override async void OnParametersSet()
     {
         base.OnParametersSet();
 
@@ -53,7 +53,7 @@
         {
             if (NoteId > 0 && (currentNote == null || currentNote.NoteId != NoteId))
             {
-                currentNote = _notesService.GetNote(NoteId);
+                currentNote = await _notesService.GetNote(NoteId);
             }
         }
 
@@ -77,7 +77,7 @@
     {
         var noteTypeString = await _JsRuntime.InvokeAsync<string>("getControlValue", NoteTypeControl);
         currentNote.NoteType = Enum.Parse<NoteType>(noteTypeString, true);
-        _notesService.SaveNote(currentNote);
+        await _notesService.SaveNote(currentNote);
         await _globalNavigation.NavigateBack();
     }
 }
