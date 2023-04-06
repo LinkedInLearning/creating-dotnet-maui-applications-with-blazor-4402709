@@ -1,7 +1,6 @@
 ﻿using Notes.Core.Interfaces;
 using Notes.Core.Models;
 using SQLite;
-using static Android.Content.ClipData;
 
 namespace MauiNotes.Services
 {
