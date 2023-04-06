@@ -32,24 +32,28 @@ namespace MauiNotes.Services
             };
         }
 
-        public void AddNote(Note note)
+        public Task AddNote(Note note)
         {
             _notes.Add(note);
+            return Task.CompletedTask;
         }
 
-        public void DeleteNote(Note note)
+        public Task DeleteNote(Note note)
         {
             _notes.Remove(note);
+            return Task.CompletedTask;
         }
 
-        public Note GetNote(int id)
+        public Task<Note> GetNote(int id)
         {
-            var returnValue =  _notes.SingleOrDefault(n => n.NoteId == id);
+            var oTcs = new TaskCompletionSource<Note>();
+            var returnValue = _notes.SingleOrDefault(n => n.NoteId == id);
             if (returnValue != null)
             {
                 returnValue = CopyNote(returnValue);
             }
-            return returnValue;
+            oTcs.SetResult(returnValue);
+            return oTcs.Task;
         }
 
         private Note CopyNote(Note note)
@@ -62,13 +66,16 @@ namespace MauiNotes.Services
             };
         }
 
-        public List<Note> GetNotes(NoteType noteType)
+        public Task<List<Note>> GetNotes(NoteType noteType)
         {
-            return _notes.Where(n => n.NoteType == noteType).ToList();
+            var oTcs = new TaskCompletionSource<List<Note>>();
+            oTcs.SetResult(_notes.Where(n => n.NoteType == noteType).ToList());
+            return oTcs.Task;
         }
 
-        public void SaveNote(Note note)
+        public Task SaveNote(Note note)
         {
+            var oTcs = new TaskCompletionSource<Note>();
             if (note.NoteId <= 0)
             {
                 note.NoteId = _notes.Max(n => n.NoteId) + 1;
@@ -78,6 +85,9 @@ namespace MauiNotes.Services
                 _notes.Remove(_notes.Single(n => n.NoteId == note.NoteId));
             }
             _notes.Add(note);
+
+            oTcs.SetResult(note);
+            return oTcs.Task;
         }
     }
 }
