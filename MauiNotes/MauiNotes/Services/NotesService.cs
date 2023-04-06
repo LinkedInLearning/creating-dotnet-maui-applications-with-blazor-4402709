@@ -37,13 +37,13 @@ namespace MauiNotes.Services
 
         public async Task SaveNote(Note note)
         {
-            if (note.NoteId > 0)
+            if (note.NoteId <= 0)
             {
-                await _Connection.UpdateAsync(note);
+                await _Connection.InsertAsync(note);
             }
             else
             {
-                await _Connection.InsertAsync(note);
+                await _Connection.UpdateAsync(note);
             }
         }
     }
