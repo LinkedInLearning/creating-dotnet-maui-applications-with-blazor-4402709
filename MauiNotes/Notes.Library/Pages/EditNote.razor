@@ -45,7 +45,7 @@
 
     ElementReference NoteTypeControl;
 
-    protected override void OnParametersSet()
+    protected override async void OnParametersSet()
     {
         base.OnParametersSet();
 
@@ -53,7 +53,7 @@
         {
             if (NoteId > 0 && (currentNote == null || currentNote.NoteId != NoteId))
             {
-                currentNote = _notesService.GetNote(NoteId);
+                currentNote = await _notesService.GetNote(NoteId);
             }
         }
 

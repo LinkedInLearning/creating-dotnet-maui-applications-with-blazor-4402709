@@ -1,42 +1,50 @@
 ﻿using Notes.Core.Interfaces;
 using Notes.Core.Models;
 using SQLite;
+using static Android.Content.ClipData;
 
 namespace MauiNotes.Services
 {
     public class NotesService : INotesService
     {
-        SQLiteConnection _Connection;
+        SQLiteAsyncConnection _Connection;
 
         public NotesService()
         {
-            _Connection = new SQLiteConnection(Constants.DatabasePath, Constants.Flags);
-            _Connection.CreateTable<Note>();
+            _Connection = new SQLiteAsyncConnection(Constants.DatabasePath, Constants.Flags);
+            _Connection.CreateTableAsync<Note>();
         }
 
-        public void AddNote(Note note)
+        public async Task AddNote(Note note)
         {
-            _Connection.Insert(note);
+            await _Connection.InsertAsync(note);
         }
 
-        public void DeleteNote(Note note)
+        public async Task DeleteNote(Note note)
         {
-            _Connection.Delete(note);
+            await _Connection.DeleteAsync(note);
         }
 
-        public Note GetNote(int id)
+        public async Task<Note> GetNote(int id)
         {
-            return _Connection.Table<Note>().SingleOrDefault(n => n.NoteId == id);
+            return await _Connection.Table<Note>().FirstOrDefaultAsync(n => n.NoteId == id);
+        }
+        
+        public async Task<List<Note>> GetNotes(NoteType noteType)
+        {
+            return await _Connection.Table<Note>().Where(n => n.NoteType == noteType).ToListAsync();
         }
 
-        public List<Note> GetNotes(NoteType noteType)
+        public async Task SaveNote(Note note)
         {
-            return _Connection.Table<Note>().Where(n => n.NoteType == noteType).ToList();
-        }
-
-        public void SaveNote(Note note)
-        {
-            _Connection.InsertOrReplace(note);
+            if (note.NoteId > 0)
+            {
+                await _Connection.UpdateAsync(note);
+            }
+            else
+            {
+                await _Connection.InsertAsync(note);
+            }
         }
     }
 }
