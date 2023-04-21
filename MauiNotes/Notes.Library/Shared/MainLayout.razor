@@ -12,7 +12,7 @@
     {
         await base.OnInitializedAsync();
 
-        if (!_LoginService.IsAuthenticated)
+        if ((await _LoginService.IsAuthenticated()) == false)
         {
             await _GlobalNavigation.NavigateTo("/Login");
         }

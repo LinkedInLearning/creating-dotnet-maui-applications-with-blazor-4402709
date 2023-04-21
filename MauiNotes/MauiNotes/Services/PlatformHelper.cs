@@ -22,5 +22,15 @@ namespace MauiNotes.Services
 #endif
             }
         }
+
+        public Task<bool> IsOnline()
+        {
+            var tcs = new TaskCompletionSource<bool>();
+
+            NetworkAccess accessType = Connectivity.Current.NetworkAccess;
+            tcs.SetResult(accessType == NetworkAccess.Internet);
+
+            return tcs.Task;
+        }
     }
 }

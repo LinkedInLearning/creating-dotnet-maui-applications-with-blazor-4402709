@@ -3,6 +3,7 @@ using MauiNotes.Services;
 using Notes.Core.Interfaces;
 using MauiNotes.ViewModels;
 using MauiNotes.Views;
+using Notes.Core.Services;
 
 namespace MauiNotes;
 
@@ -37,6 +38,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<List<GlobalNavigation.ApplicationRoute>>(GetNativeApplicationRoutes());
         builder.Services.AddTransient<IGlobalNavigation, GlobalNavigation>();
         builder.Services.AddSingleton<IPlatformHelper, PlatformHelper>();
+        builder.Services.AddTransient<IKeyValueStorageService, KeyValueStorageService>();
 
         builder.Services.AddTransient<LoginViewModel>();
 

@@ -1,6 +1,7 @@
 ﻿@page "/Login"
 @inject IGlobalNavigation _globalNavigation
 @inject ILoginService _loginService
+@inject IJSRuntime _JsRuntime
 
 <ion-header>
     <ion-toolbar color="primary">
@@ -10,11 +11,11 @@
 <ion-grid fixed="true" style="display: flex; flex-flow: column;">
     <ion-row size="auto">
         <ion-col size="2"><ion-label>User Id:</ion-label></ion-col>
-        <ion-col size="10"><ion-item><ion-input></ion-input></ion-item></ion-col>
+        <ion-col size="10"><ion-item><ion-input @bind-value="@_userName" @bind-value:event="oninput"></ion-input></ion-item></ion-col>
     </ion-row>
     <ion-row size="auto">
         <ion-col size="2"><ion-label>Password:</ion-label></ion-col>
-        <ion-col size="10"><ion-item><ion-input type="password"></ion-input></ion-item></ion-col>
+        <ion-col size="10"><ion-item><ion-input type="password" @bind-value="@_password" @bind-value:event="oninput"></ion-input></ion-item></ion-col>
     </ion-row>
     <ion-row style="flex-grow: 1" class="ion-justify-content-center ion-align-items-end">
         <ion-col size="auto">
@@ -24,9 +25,18 @@
 </ion-grid>
 
 @code {
+    string _userName = "";
+    string _password = "";
+
     async void Login_Click()
     {
-        _loginService.Login("", "");
-        await _globalNavigation.NavigateBack();
+        if (await _loginService.Login(_userName, _password))
+        {
+            await _globalNavigation.NavigateBack();
+        }
+        else
+        {
+            await _JsRuntime.InvokeVoidAsync("presentConfirm", "Authorization Error", "Unable to login", "OK");
+        }
     }
 }

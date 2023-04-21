@@ -8,8 +8,8 @@ namespace Notes.Core.Interfaces
 {
     public interface ILoginService
     {
-        bool IsAuthenticated { get; }
+        Task<bool> IsAuthenticated();
 
-        bool Login(string username, string password);
+        Task<bool> Login(string username, string password);
     }
 }

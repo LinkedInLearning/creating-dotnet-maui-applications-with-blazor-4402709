@@ -1,9 +1,4 @@
 ﻿using Notes.Core.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MauiNotes.ViewModels
 {
@@ -21,6 +16,39 @@ namespace MauiNotes.ViewModels
 
         private Command _LoginCommand;
 
+        private string _userName = "";
+        public string UserName {
+            get
+            {
+                return _userName;
+            }
+            set
+            {
+                if (_userName != value) 
+                {
+                    _userName = value;
+                    NotifyPropertyChanged(nameof(UserName));
+                }
+            }
+        }
+
+        private string _password = "";
+        public string Password
+        {
+            get
+            {
+                return _password;
+            }
+            set
+            {
+                if (_password != value)
+                {
+                    _password = value;
+                    NotifyPropertyChanged(nameof(Password));
+                }
+            }
+        }
+
         public Command Login
         {
             get { return _LoginCommand?? new Command(async () => await ExecuteLogin()); }
@@ -28,8 +56,14 @@ namespace MauiNotes.ViewModels
 
         private async Task ExecuteLogin()
         {
-            _LoginService.Login("", "");
-            await _GlobalNavigation.NavigateBack();
+            if (await _LoginService.Login(UserName, Password) == true)
+            {
+                await _GlobalNavigation.NavigateBack();
+            }
+            else
+            {
+                await Application.Current.MainPage.DisplayAlert("Authorization Error", "Unable to Login.", "OK");
+            }
         }
     }
 }

@@ -7,11 +7,11 @@
         <BackButtonBehavior IsVisible="False" IsEnabled="False" />
     </Shell.BackButtonBehavior>
     <Shell.NavBarIsVisible>true</Shell.NavBarIsVisible>
-    <Grid ColumnDefinitions="100, *" RowDefinitions="100, 35, 50, 35, *, 50, 100">
+    <Grid ColumnDefinitions="100, *" RowDefinitions="100, 45, 50, 45, *, 50, 100">
         <Label Text="User Id:" Grid.Column="0" Grid.Row="1" Margin="5, 0, 5, 0" />
-        <Entry Grid.Column="1" Grid.Row="1" Margin="5, 0, 5, 0" />
+        <Entry Grid.Column="1" Grid.Row="1" Margin="5, 0, 5, 0" Text="{Binding UserName}" />
         <Label Text="Password:" Grid.Column="0" Grid.Row="3" Margin="5, 0, 5, 0" />
-        <Entry Grid.Column="1" Grid.Row="3" Margin="5, 0, 5, 0" IsPassword="True" />
+        <Entry Grid.Column="1" Grid.Row="3" Margin="5, 0, 5, 0"  Text="{Binding Password}" IsPassword="True" />
         <Button Text="Login" Grid.ColumnSpan="2" Grid.Row="5" Margin="5, 0, 5, 0" Command="{Binding Login}" />
     </Grid>
 </ContentPage>

@@ -13,8 +13,11 @@ namespace Notes.Core.Interfaces
         iOS = 2,
         Android = 3,
     }
+
     public interface IPlatformHelper
     {
         PlatformType PlatformType { get; }
+
+        Task<bool> IsOnline();
     }
 }
