@@ -11,5 +11,7 @@ namespace Notes.Core.Interfaces
         Task<bool> IsAuthenticated();
 
         Task<bool> Login(string username, string password);
+
+        string CurrentToken();
     }
 }

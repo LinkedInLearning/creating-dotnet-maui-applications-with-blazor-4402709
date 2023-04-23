@@ -36,5 +36,10 @@ namespace Notes.Core.Services
             _isAuthenticated = false;
             return Task.CompletedTask;
         }
+
+        public string CurrentToken()
+        {
+            return string.Empty;
+        }
     }
 }
