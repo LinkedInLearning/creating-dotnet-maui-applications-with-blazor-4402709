@@ -33,12 +33,43 @@ namespace Notes.Core.Services
             return tcs.Task;
         }
 
-        public Task<bool> Login(string username, string password)
+        public async Task<bool> Login(string username, string password)
         {
-            var tcs = new TaskCompletionSource<bool>();
-            tcs.SetResult(true);
+            bool loginSuccess = false;
+            if (await _platformHelper.IsOnline())
+            {
+                HttpResponseMessage response = null;
+                var dict = new Dictionary<string, string>();
+                dict.Add("grant_type", "password");
+                dict.Add("username", username);
+                dict.Add("password", password);
+                dict.Add("audience", AUDIENCE);
+                dict.Add("client_id", CLIENT_ID);
 
-            return tcs.Task;
+                using (HttpClient client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-www-form-urlencoded"));
+                    response = await client.PostAsync(AUTH_URI, new FormUrlEncodedContent(dict));
+                }
+
+                if (response != null &&
+                    response.IsSuccessStatusCode)
+                {
+                    var authenticationInformation = JsonConvert.DeserializeObject<AuthenticationResponse>(await response.Content.ReadAsStringAsync());
+                    var expiresTime = DateTime.Now.AddDays(3);
+                    if (authenticationInformation != null)
+                    {
+                        await _localStore.SetValue<DateTime>(OFFLINE_EXPIRATION, expiresTime);
+                        _token = authenticationInformation.access_token;
+                        loginSuccess = true;
+                    }
+                }
+            }
+            if (loginSuccess == false)
+            {
+                await Logout();
+            }
+            return loginSuccess;
         }
 
         private async Task Logout()
