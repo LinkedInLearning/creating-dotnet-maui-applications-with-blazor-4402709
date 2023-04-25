@@ -26,11 +26,9 @@ namespace Notes.Core.Services
             _platformHelper = platformHelper;
         }
 
-        public Task<bool> IsAuthenticated()
+        public async Task<bool> IsAuthenticated()
         {
-            var tcs = new TaskCompletionSource<bool>();
-            tcs.SetResult(true);
-            return tcs.Task;
+            return await HasValidCredentials();
         }
 
         public async Task<bool> Login(string username, string password)
@@ -56,9 +54,10 @@ namespace Notes.Core.Services
                     response.IsSuccessStatusCode)
                 {
                     var authenticationInformation = JsonConvert.DeserializeObject<AuthenticationResponse>(await response.Content.ReadAsStringAsync());
-                    var expiresTime = DateTime.Now.AddDays(3);
+                    
                     if (authenticationInformation != null)
                     {
+                        var expiresTime = DateTime.Now.AddDays(3);
                         await _localStore.SetValue<DateTime>(OFFLINE_EXPIRATION, expiresTime);
                         _token = authenticationInformation.access_token;
                         loginSuccess = true;
@@ -81,6 +80,28 @@ namespace Notes.Core.Services
         public string CurrentToken()
         {
             return _token;
+        }
+
+        private async Task<bool> HasValidCredentials()
+        {
+            bool returnValue = false;
+            try
+            {
+                var offlineExpiration = await _localStore.GetValue<DateTime?>(OFFLINE_EXPIRATION);
+                var isOnline = await _platformHelper.IsOnline();
+                if (string.IsNullOrEmpty(_token) == false)
+                {
+                    var jwtToken = new JwtSecurityToken(_token);
+                    returnValue = jwtToken != null && jwtToken.ValidFrom <= DateTime.UtcNow && jwtToken.ValidTo >= DateTime.UtcNow;
+                }
+                if (returnValue == false && isOnline == false &&
+                    offlineExpiration != null && offlineExpiration.HasValue)
+                {
+                    returnValue = offlineExpiration.Value >= DateTime.UtcNow;
+                }
+            }
+            catch (Exception) { }
+            return returnValue;
         }
     }
 }
