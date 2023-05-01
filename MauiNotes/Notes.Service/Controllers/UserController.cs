@@ -80,15 +80,36 @@ namespace Notes.Service.Controllers
             return returnValue; 
         }
 
-        private Task<string> GetUserInfo(string token, string userId)
+        private async Task<string> GetUserInfo(string token, string userId)
         {
-            var tcs = new TaskCompletionSource<string>();
+                string returnValue = string.Empty;
 
-            string returnValue = "unavailable";
+                HttpResponseMessage response = null;
 
-            tcs.SetResult(returnValue);
+                using (HttpClient client = new HttpClient())
+                {
+                client.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
 
-            return tcs.Task;
+                    response = await client.GetAsync($"https://bowman74.auth0.com/api/v2/users/%7B{userId}%7D");
+                }
+
+                if (response != null &&
+                    response.IsSuccessStatusCode)
+                {
+                    var authenticationInformation = JsonConvert.DeserializeObject<AuthenticationResponse>(await response.Content.ReadAsStringAsync());
+
+                    if (authenticationInformation != null)
+                    {
+                        returnValue = authenticationInformation.access_token;
+                    }
+                }
+                else if (response != null)
+                {
+                    await response.Content.ReadAsStringAsync();
+                }
+
+
+                return returnValue;
         }
     }
 }
