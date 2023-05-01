@@ -87,6 +87,30 @@
         if (await _PlatformHelper.IsOnline() &&
             await _LoginService.IsAuthenticated())
         {
+            HttpResponseMessage response = null;
+
+            using (HttpClient client = new HttpClient())
+            {
+                var contentType = new MediaTypeWithQualityHeaderValue("application/json");
+
+                client.DefaultRequestHeaders.Accept.Add(contentType);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _LoginService.CurrentToken());
+                response = await client.GetAsync(SERVICE_URI);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string responseContent = await response.Content.ReadAsStringAsync();
+                    if (!string.IsNullOrEmpty(responseContent))
+                    {
+                        var user = JsonConvert.DeserializeObject<UserInformation>(responseContent);
+
+                        if (user != null)
+                        {
+                            returnValue = $"{user.FirstName} {user.LastName}";
+                        }
+                    }
+                }
+            }
         }
 
         return returnValue;
