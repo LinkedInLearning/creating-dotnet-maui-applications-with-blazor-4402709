@@ -10,6 +10,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notes.Library", "Notes.Libr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WasmNotes", "WasmNotes\WasmNotes.csproj", "{09ABDDB5-60B5-46A9-A928-ABDE02F3C079}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notes.Service", "Notes.Service\Notes.Service.csproj", "{EB47AD80-B758-44E8-B165-33DB3470B830}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -34,12 +36,16 @@ Global
 		{09ABDDB5-60B5-46A9-A928-ABDE02F3C079}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{09ABDDB5-60B5-46A9-A928-ABDE02F3C079}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{09ABDDB5-60B5-46A9-A928-ABDE02F3C079}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB47AD80-B758-44E8-B165-33DB3470B830}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB47AD80-B758-44E8-B165-33DB3470B830}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB47AD80-B758-44E8-B165-33DB3470B830}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB47AD80-B758-44E8-B165-33DB3470B830}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {7542A2EF-D98D-4246-BF06-554285720B1E}
 		        SolutionGuid = {61F7FB11-1E47-470C-91E2-47F8143E1572}
+		SolutionGuid = {7542A2EF-D98D-4246-BF06-554285720B1E}
 	EndGlobalSection
 EndGlobal

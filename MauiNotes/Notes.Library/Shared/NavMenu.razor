@@ -1,19 +1,31 @@
-﻿@inject IGlobalNavigation _GlobalNavigation
+﻿@using System.Net.Http.Headers;
+@using CommunityToolkit.Mvvm.Messaging;
+@using Newtonsoft.Json;
+@inject IGlobalNavigation _GlobalNavigation
+@inject IPlatformHelper _PlatformHelper
+@inject ILoginService _LoginService
 
 <ion-menu content-id="main-content">
-    <ion-content class="ion-padding">
+    <ion-grid fixed="true" style="display: flex; flex-flow: column;">
+        <ion-row size="auto">
         @foreach (var item in _menuItems)
         {
-            <ion-item lines="none" color="@item.Color">
-                <ion-menu-toggle>
-                    <ion-label @onclick="() => NavigateToURI(item.Uri)">@item.Caption</ion-label>
-                </ion-menu-toggle>
-            </ion-item>
+        <ion-item lines="none" color="@item.Color">
+            <ion-menu-toggle>
+                <ion-label @onclick="() => NavigateToURI(item.Uri)">@item.Caption</ion-label>
+            </ion-menu-toggle>
+        </ion-item>
         }
-    </ion-content>
+    </ion-row>
+        <ion-row style="flex-grow: 1" class="ion-justify-content-left ion-align-items-end">
+            <ion-label>@_userName</ion-label>
+        </ion-row>
+    </ion-grid>
 </ion-menu>
 
 @code {
+    string _userName = "Fetching...";
+
     class MenuItem
     {
         public string Caption { get; set; }
@@ -23,9 +35,22 @@
 
     private List<MenuItem> _menuItems;
 
-    protected override void OnParametersSet()
+    private readonly string SERVICE_URI = "https://localhost:7141/User";
+
+    protected override async Task OnInitializedAsync()
     {
-        base.OnParametersSet();
+        await base.OnInitializedAsync();
+
+        WeakReferenceMessenger.Default.Register<LoginStateChangedMessage>(this, async (r, m) =>
+        {
+            _userName = await GetUserName();
+            this.StateHasChanged();
+        });
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await base.OnParametersSetAsync();
 
         _menuItems = new List<MenuItem>
         {
@@ -42,6 +67,8 @@
                 Color = "default"
             },
         };
+
+        _userName = await GetUserName();
     }
 
     void NavigateToURI(string uri)
@@ -51,5 +78,17 @@
         {
             oMenuItem.Color = uri == oMenuItem.Uri ? "light" : "default";
         }
+    }
+
+    async Task<string> GetUserName()
+    {
+        string returnValue = "Unavailable";
+
+        if (await _PlatformHelper.IsOnline() &&
+            await _LoginService.IsAuthenticated())
+        {
+        }
+
+        return returnValue;
     }
 }

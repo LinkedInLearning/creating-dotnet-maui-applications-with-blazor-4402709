@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components.WebAssembly.Http;
+﻿using CommunityToolkit.Mvvm.Messaging;
+using Microsoft.AspNetCore.Components.WebAssembly.Http;
 using Newtonsoft.Json;
 using Notes.Core.Interfaces;
 using Notes.Core.Models;
@@ -13,9 +14,9 @@ namespace Notes.Core.Services
         private readonly IPlatformHelper _platformHelper;
         private readonly IKeyValueStorageService _localStore;
 
-        private readonly string AUDIENCE = "https://MauiBlazor.org";
-        private readonly string CLIENT_ID = "btxhnjTeMdQfJbWvUVmZzvfGhctICq5r";
-        private readonly string AUTH_URI = "https://bowman74.auth0.com/oauth/token";
+        private readonly string AUDIENCE = "<audience>";
+        private readonly string CLIENT_ID = "<client_id>";
+        private readonly string AUTH_URI = "<authorization_uri>";
 
         private readonly string OFFLINE_EXPIRATION = "OfflineExpiration";
 
@@ -61,6 +62,7 @@ namespace Notes.Core.Services
                         await _localStore.SetValue<DateTime>(OFFLINE_EXPIRATION, expiresTime);
                         _token = authenticationInformation.access_token;
                         loginSuccess = true;
+                        WeakReferenceMessenger.Default.Send(new LoginStateChangedMessage(true));
                     }
                 }
             }
@@ -75,6 +77,7 @@ namespace Notes.Core.Services
         {
             _token = string.Empty;
             await _localStore.RemoveValue(OFFLINE_EXPIRATION);
+            WeakReferenceMessenger.Default.Send(new LoginStateChangedMessage(false));
         }
 
         public string CurrentToken()
