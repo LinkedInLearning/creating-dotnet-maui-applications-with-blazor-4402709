@@ -25,9 +25,25 @@ namespace MauiNotes.Services
             _JsRuntime = jsRuntime;
         }
 
-        public Task NavigateBack()
+        public async Task NavigateBack()
         {
-            throw new NotImplementedException();
+            if (_NativeStack != null && _NativeStack.Count >= 1) 
+            {
+                var currentRoute = _NativeStack.Pop();
+                switch (currentRoute.Type) 
+                {
+                    case ApplicationRoute.NavigationType.Native:
+                        await GetXamlNavigation().PopAsync();
+                        break;
+                    case ApplicationRoute.NavigationType.NativeModal:
+                        await GetXamlNavigation().PopModalAsync();
+                        break;
+                }
+            }
+            else
+            {
+                await _JsRuntime.InvokeVoidAsync("goBack");
+            }
         }
 
         public async Task NavigateTo(string uri)
