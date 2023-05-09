@@ -30,7 +30,7 @@ namespace MauiNotes.Services
             throw new NotImplementedException();
         }
 
-        public Task NavigateTo(string url)
+        public Task NavigateTo(string uri)
         {
             throw new NotImplementedException();
         }
