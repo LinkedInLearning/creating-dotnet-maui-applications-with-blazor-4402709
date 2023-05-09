@@ -30,9 +30,36 @@ namespace MauiNotes.Services
             throw new NotImplementedException();
         }
 
-        public Task NavigateTo(string uri)
+        public async Task NavigateTo(string uri)
         {
-            throw new NotImplementedException();
+            var oRoute = _ApplicationRoutes.SingleOrDefault(r => r.Uri == uri);
+            if (oRoute != null)
+            {
+                switch (oRoute.Type)
+                {
+                    case ApplicationRoute.NavigationType.Native:
+                        await GetXamlNavigation().PushAsync((Page)_ServiceProvider.GetService(oRoute.NativeType));
+                        _NativeStack.Push(oRoute);
+                        break;
+                    case ApplicationRoute.NavigationType.NativeModal:
+                        await GetXamlNavigation().PushModalAsync((Page)_ServiceProvider.GetService(oRoute.NativeType));
+                        _NativeStack.Push(oRoute);
+                        break;
+                }
+            }
+            else
+            {
+                if (_NativeStack.Count > 0) 
+                {
+                    throw new InvalidNavigationException("Blazor navigation cannot be called from within xaml navigation");
+                }
+                _NavigationManager.NavigateTo(uri);
+            }
+        }
+
+        private INavigation GetXamlNavigation()
+        {
+            return App.Current.MainPage.Navigation;
         }
 
         public class ApplicationRoute
