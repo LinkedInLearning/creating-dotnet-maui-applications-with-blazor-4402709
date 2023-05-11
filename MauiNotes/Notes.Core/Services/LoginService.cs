@@ -9,37 +9,45 @@ namespace Notes.Core.Services
 {
     public class LoginService : ILoginService
     {
-        private bool _isAuthenticated = false;
+        private static string _token = string.Empty;
 
-        public LoginService()
+        private readonly IPlatformHelper _platformHelper;
+        private readonly IKeyValueStorageService _localStore;
+
+        private readonly string AUDIENCE = "https://MauiBlazor.org";
+        private readonly string CLIENT_ID = "<token>";
+        private readonly string AUTH_URI = "<endpoint>";
+        private readonly string OFFLINE_EXPIRATION = "OfflineExpiration";
+
+
+
+
+        public LoginService(IKeyValueStorageService localStore,
+            IPlatformHelper platformHelper)
         {
+            _localStore = localStore;
+            _platformHelper = platformHelper;
         }
 
         public Task<bool> IsAuthenticated()
         {
-            var tcs = new TaskCompletionSource<bool>();
-            tcs.SetResult(_isAuthenticated);
-            return tcs.Task;
+            return true;
         }
 
         public Task<bool> Login(string username, string password)
         {
-            var tcs = new TaskCompletionSource<bool>();
-            _isAuthenticated = true;
-            tcs.SetResult(_isAuthenticated);
-
-            return tcs.Task;
+            return true;
         }
 
-        private Task Logout()
+        private async Task Logout()
         {
-            _isAuthenticated = false;
-            return Task.CompletedTask;
+            _token = string.Empty;
+            await _localStore.RemoveValue(OFFLINE_EXPIRATION);
         }
 
         public string CurrentToken()
         {
-            return string.Empty;
+            return _token;
         }
     }
 }
