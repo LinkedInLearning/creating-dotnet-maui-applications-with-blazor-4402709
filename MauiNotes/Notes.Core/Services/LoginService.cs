@@ -30,9 +30,35 @@ namespace Notes.Core.Services
             _platformHelper = platformHelper;
         }
 
-        public Task<bool> IsAuthenticated()
+        public async Task<bool> IsAuthenticated()
         {
-            return true;
+            return await HasValidCredentials();
+        }
+
+        private async Task<bool> HasValidCredentials()
+        {
+            bool returnValue = false;
+
+            try
+            {
+                var offlineExpiration = await _localStore.GetValue<DateTime?>(OFFLINE_EXPIRATION);
+
+                if (string.IsNullOrEmpty(_token) == false)
+                {
+                    var jwtToken = new JwtSecurityToken(_token);
+
+                    returnValue = jwtToken != null && jwtToken.ValidFrom <= DateTime.UtcNow && jwtToken.ValidTo >= DateTime.UtcNow;
+                }
+
+                if (returnValue == false && (await _platformHelper.IsOnline()) == false 
+                    && offlineExpiration != null && offlineExpiration.HasValue)
+                {
+                    returnValue = offlineExpiration.Value >= DateTime.Now;
+                }
+            }
+            catch (Exception) { }
+
+            return returnValue;
         }
 
         public async Task<bool> Login(string username, string password)
