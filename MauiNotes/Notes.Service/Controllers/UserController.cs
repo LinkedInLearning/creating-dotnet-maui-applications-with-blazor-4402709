@@ -21,6 +21,7 @@ namespace Notes.Service.Controllers
         private readonly string AUDIENCE = "<audience>";
         private readonly string CLIENT_ID = "<client_id>";
         private readonly string AUTH_URI = "<authorization_uri>";
+        private readonly string USER_URI = "<user_uri>";
         private readonly string CLIENT_SECRET = "<client_secret>";
 
         public UserController(ILogger<UserController> logger)
@@ -37,7 +38,7 @@ namespace Notes.Service.Controllers
 
             var managementToken = await GetServiceToken();
 
-            var client = new ManagementApiClient(managementToken, new Uri("https://bowman74.auth0.com/api/v2/"));
+            var client = new ManagementApiClient(managementToken, new Uri($"{USER_URI}/api/v2/"));
 
             var user = await client.Users.GetAsync(jwtToken.Payload["sub"].ToString());
 
@@ -90,7 +91,7 @@ namespace Notes.Service.Controllers
                 {
                 client.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
 
-                    response = await client.GetAsync($"https://bowman74.auth0.com/api/v2/users/%7B{userId}%7D");
+                    response = await client.GetAsync($"{USER_URI}/api/v2/users/%7B{userId}%7D");
                 }
 
                 if (response != null &&

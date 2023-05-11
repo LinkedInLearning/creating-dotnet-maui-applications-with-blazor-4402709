@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components.WebAssembly.Http;
+﻿using CommunityToolkit.Mvvm.Messaging;
+using Microsoft.AspNetCore.Components.WebAssembly.Http;
 using Newtonsoft.Json;
 using Notes.Core.Interfaces;
 using Notes.Core.Models;
@@ -93,7 +94,7 @@ namespace Notes.Core.Services
                             await _localStore.SetValue<DateTime>(OFFLINE_EXPIRATION, expiresTime);
                             _token = authenticationInformation.access_token;
                             loginSuccess = true;
-
+                            WeakReferenceMessenger.Default.Send(new LoginStateChangedMessage(true));
                         }
                     }
                 }
