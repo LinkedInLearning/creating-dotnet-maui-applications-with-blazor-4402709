@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using Notes.Core.Interfaces;
 using Notes.Core.Models;
+using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http.Headers;
 
@@ -34,9 +35,49 @@ namespace Notes.Core.Services
             return true;
         }
 
-        public Task<bool> Login(string username, string password)
+        public async Task<bool> Login(string username, string password)
         {
-            return true;
+            bool loginSuccess = false;
+
+            if (await _platformHelper.IsOnline() == true) 
+            {
+                HttpResponseMessage response = null;
+
+                var dict = new Dictionary<string, string>();
+                dict.Add("grant_type", "password");
+                dict.Add("username", username);
+                dict.Add("password", password);
+                dict.Add("audience", AUDIENCE);
+                dict.Add("client_id", CLIENT_ID);
+
+                using (HttpClient client = new HttpClient()) 
+                {
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-www-form-urlencoded"));
+
+                    response = await client.PostAsync(AUTH_URI, new FormUrlEncodedContent(dict));
+
+                    if (response != null && response.IsSuccessStatusCode)
+                    {
+                        var authenticationInformation = JsonConvert.DeserializeObject<AuthenticationResponse>(await response.Content.ReadAsStringAsync());
+
+                        if (authenticationInformation != null) 
+                        {
+                            var expiresTime = DateTime.Now.AddDays(3);
+
+                            await _localStore.SetValue<DateTime>(OFFLINE_EXPIRATION, expiresTime);
+                            _token = authenticationInformation.access_token;
+                            loginSuccess = true;
+
+                        }
+                    }
+                }
+            }
+
+            if (loginSuccess == false)
+            {
+                await Logout();
+            }
+            return loginSuccess;
         }
 
         private async Task Logout()
