@@ -1,7 +1,13 @@
 # Creating .NET MAUI Applications with Blazor
-This is the repository for the LinkedIn Learning course `Creating .NET MAUI Applications with Blazor`. The full course is available from [LinkedIn Learning][lil-course-url].
+This is the repository for the LinkedIn Learning course Creating .NET MAUI Applications with Blazor. The full course is available from [LinkedIn Learning][lil-course-url].
 
-_See the readme file in the main branch for updated instructions and information._
+![Creating .NET MAUI Applications with Blazor][lil-thumbnail-url] 
+
+Writing applications can be an intense use of resources. By combining MAUI with Blazor, you can simplify your organization's technology stack and write a single application for multiple platforms, saving you time and money, while sharing code between websites, mobile applications and desktop apps. This is particularly useful for internal enterprise applications where there is less utility in creating separate code bases for website and mobile applications. In this course, instructor Kevin Ford illustrates the key facets of combining MAUI with Blazor through a hands-on exercise: building a note keeping app that can run on mobile devices, through a website, and both on and offline.
+
+ 
+Whether you're new to .NET or an experienced developer, this course is perfect for anyone who wants to learn how to build powerful, cross-platform applications with ease. Join Kevin to discover the power of Blazor in MAUI today.
+
 ## Instructions
 This repository has branches for each of the videos in the course. You can use the branch pop up menu in github to switch to a specific branch and take a look at the course at that stage, or you can add `/tree/BRANCH_NAME` to the URL to go to the branch you want to access.
 
@@ -20,15 +26,16 @@ To resolve this issue:
     Add changes to git using this command: git add .
 	Commit changes using this command: git commit -m "some message"
 
-## Installing
-1. To use these exercise files, you must have the following installed:
-	- [list of requirements for course]
-2. Clone this repository into your local machine using the terminal (Mac), CMD (Windows), or a GUI tool like SourceTree.
-3. [Course-specific instructions]
+
+### Instructor
+
+Kevin Ford 
+                            
 
 
-[0]: # (Replace these placeholder URLs with actual course URLs)
+                            
 
-[lil-course-url]: https://www.linkedin.com/learning/
-[lil-thumbnail-url]: http://
+Check out my other courses on [LinkedIn Learning](https://www.linkedin.com/learning/instructors/kevin-ford).
 
+[lil-course-url]: https://www.linkedin.com/learning/creating-dot-net-maui-applications-with-blazor?dApp=59033956&leis=LAA
+[lil-thumbnail-url]: https://media.licdn.com/dms/image/D560DAQEfCtVhWC-Ufg/learning-public-crop_288_512/0/1687802119676?e=2147483647&v=beta&t=QOkLTfAXHKO5-TMZ7gErJE-dEZHwvRmSyomsxYQe6lM
